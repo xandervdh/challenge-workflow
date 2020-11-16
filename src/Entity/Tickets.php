@@ -20,9 +20,20 @@ class Tickets
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Users::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $assigned_to;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="tickets")
+     */
+    private $customer_id;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Title;
+    private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,16 +56,6 @@ class Tickets
     private $priority;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="tickets")
-     */
-    private $customer_id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="tickets")
-     */
-    private $assigned_to;
-
-    /**
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="ticket_id", orphanRemoval=true)
      */
     private $comments;
@@ -70,14 +71,50 @@ class Tickets
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getAssignedTo(): ?Users
     {
-        return $this->Title;
+        return $this->assigned_to;
     }
 
-    public function setTitle(string $Title): self
+    public function setAssignedTo(?Users $assigned_to): self
     {
-        $this->Title = $Title;
+        $this->assigned_to = $assigned_to;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Users[]
+     */
+    public function getCustomerId(): Collection
+    {
+        return $this->customer_id;
+    }
+
+    public function addCustomerId(Users $customerId): self
+    {
+        if (!$this->customer_id->contains($customerId)) {
+            $this->customer_id[] = $customerId;
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerId(Users $customerId): self
+    {
+        $this->customer_id->removeElement($customerId);
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
@@ -126,42 +163,6 @@ class Tickets
     public function setPriority(bool $priority): self
     {
         $this->priority = $priority;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Users[]
-     */
-    public function getCustomerId(): Collection
-    {
-        return $this->customer_id;
-    }
-
-    public function addCustomerId(Users $customerId): self
-    {
-        if (!$this->customer_id->contains($customerId)) {
-            $this->customer_id[] = $customerId;
-        }
-
-        return $this;
-    }
-
-    public function removeCustomerId(Users $customerId): self
-    {
-        $this->customer_id->removeElement($customerId);
-
-        return $this;
-    }
-
-    public function getAssignedTo(): ?Users
-    {
-        return $this->assigned_to;
-    }
-
-    public function setAssignedTo(?Users $assigned_to): self
-    {
-        $this->assigned_to = $assigned_to;
 
         return $this;
     }

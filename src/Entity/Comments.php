@@ -35,7 +35,6 @@ class Comments
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $user_id;
 
