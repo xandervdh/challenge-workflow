@@ -14,7 +14,7 @@ class ManagerController extends AbstractController
     public function index(): Response
     {
         return $this->render('manager/index.html.twig', [
-            'controller_name' => 'ManagerController',
+            'controller_name' => 'manager',
         ]);
     }
 }
