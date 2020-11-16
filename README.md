@@ -2,7 +2,7 @@
 
 ## What?
 
-making a ticket desk, [here is the excersiize](excersize.md)
+making a ticket desk, [here is the excersiize](readme/excersize.md)
 
 ## Who? 
 
@@ -26,6 +26,6 @@ Check it out if you want to see how far along we are.
 ## What did we do
 
 - Looked at the database relations
-![database](db.png)
+![database](readme/db.png)
 
 - 
