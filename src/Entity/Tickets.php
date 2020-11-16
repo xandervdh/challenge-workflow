@@ -54,9 +54,15 @@ class Tickets
      */
     private $assigned_to;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="ticket_id", orphanRemoval=true)
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->customer_id = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,6 +162,36 @@ class Tickets
     public function setAssignedTo(?Users $assigned_to): self
     {
         $this->assigned_to = $assigned_to;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTicketId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getTicketId() === $this) {
+                $comment->setTicketId(null);
+            }
+        }
 
         return $this;
     }
