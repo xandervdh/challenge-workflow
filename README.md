@@ -17,12 +17,6 @@ We are using a [trello](https://trello.com/b/fJQVglRm/atomato-project) to organi
 
 Check it out if you want to see how far along we are.
 
-### General checklist
-
-- [x] making the entities
-- [ ] making login and registration
-- [ ] make authorization
-
 ## What did we do
 
 - Looked at the database relations
