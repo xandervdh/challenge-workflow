@@ -58,21 +58,21 @@ class TicketsController extends AbstractController
     private function indexSecondAgent(TicketsRepository $ticketsRepository): Response
     {
         return $this->render('tickets/index.html.twig', [
-            'tickets' => $ticketsRepository->findAll(),
+            'tickets' => $ticketsRepository->findByStatus('escalated'),
         ]);
     }
 
     private function indexAgent(TicketsRepository $ticketsRepository): Response
     {
         return $this->render('tickets/index.html.twig', [
-            'tickets' => $ticketsRepository->findAll(),
+            'tickets' => $ticketsRepository->findByStatus('open'),
         ]);
     }
 
     private function indexCustomer(TicketsRepository $ticketsRepository): Response
     {
         return $this->render('tickets/index.html.twig', [
-            'tickets' => $ticketsRepository->findAll(),
+            'tickets' => $ticketsRepository->findByStatus('closed'),
             'succes' => 'sucesses my man',
         ]);
     }
