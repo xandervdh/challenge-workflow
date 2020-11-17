@@ -21,7 +21,7 @@ class Tickets
 
     /**
      * @ORM\ManyToOne(targetEntity=Users::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $assigned_to;
 
