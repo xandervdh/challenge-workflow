@@ -28,12 +28,52 @@ class TicketsController extends AbstractController
     }
 
     /**
+     *
      * @Route("/", name="tickets_index", methods={"GET"})
      */
-    public function index(TicketsRepository $ticketsRepository): Response
+    public function indexAction(TicketsRepository $ticketsRepository)
+    {
+        if ($this->isGranted('ROLE_MANAGER')) {
+            return $this->indexManager($ticketsRepository);
+        } else if ($this->isGranted('ROLE_SECOND_LINE_AGENT')) {
+            return $this->indexSecondAgent($ticketsRepository);
+        } else if ($this->isGranted('ROLE_AGENT')) {
+            return $this->indexAgent($ticketsRepository);
+        } else if ($this->isGranted('ROLE_CUSTOMER')) {
+            return $this->indexCustomer($ticketsRepository);
+        }
+        return $this->render('tickets/index.html.twig', [
+        'tickets' => 'you are not allowed here',
+        ]);
+    }
+
+
+    private function indexManager(TicketsRepository $ticketsRepository): Response
     {
         return $this->render('tickets/index.html.twig', [
             'tickets' => $ticketsRepository->findAll(),
+        ]);
+    }
+
+    private function indexSecondAgent(TicketsRepository $ticketsRepository): Response
+    {
+        return $this->render('tickets/index.html.twig', [
+            'tickets' => $ticketsRepository->findAll(),
+        ]);
+    }
+
+    private function indexAgent(TicketsRepository $ticketsRepository): Response
+    {
+        return $this->render('tickets/index.html.twig', [
+            'tickets' => $ticketsRepository->findAll(),
+        ]);
+    }
+
+    private function indexCustomer(TicketsRepository $ticketsRepository): Response
+    {
+        return $this->render('tickets/index.html.twig', [
+            'tickets' => $ticketsRepository->findAll(),
+            'succes' => 'sucesses my man',
         ]);
     }
 
