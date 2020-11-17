@@ -71,9 +71,11 @@ class TicketsController extends AbstractController
 
     private function indexCustomer(TicketsRepository $ticketsRepository): Response
     {
+        $email = $this->session->get('_security.last_username');
+        $user = $this->usersRepository->findOneByEmail($email);
+
         return $this->render('tickets/index.html.twig', [
-            'tickets' => $ticketsRepository->findByStatus('closed'),
-            'succes' => 'sucesses my man',
+            'tickets' => $user->getTickets(),
         ]);
     }
 
