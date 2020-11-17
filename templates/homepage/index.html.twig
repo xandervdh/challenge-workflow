@@ -4,17 +4,8 @@
 
 {% block body %}
     <h1>Hello {{ name }}</h1>
-    {% if is_granted('ROLE_CUSTOMER') %}
-        <a href="{{ path('tickets_index') }}">Tickets</a>
-    {% endif %}
-    {% if is_granted('ROLE_AGENT') %}
-        <a href="{{ path('tickets_index') }}">Tickets</a>
-    {% endif %}
-    {% if is_granted('ROLE_SECOND_AGENT') %}
-        <a href="{{ path('tickets_index') }}">Tickets</a>
-    {% endif %}
+    <a href="{{ path('tickets_index') }}">Tickets</a><br>
     {% if is_granted('ROLE_MANAGER') %}
-        <a href="{{ path('tickets_index') }}">Tickets</a><br>
         <a href="{{ path('users_index') }}">Users</a>
     {% endif %}
 
