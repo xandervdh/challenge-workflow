@@ -14,11 +14,6 @@ class TicketsType extends AbstractType
         $builder
             ->add('title')
             ->add('message')
-            ->add('dateTime')
-            ->add('status')
-            ->add('priority')
-            ->add('assigned_to')
-            ->add('customer_id')
         ;
     }
 

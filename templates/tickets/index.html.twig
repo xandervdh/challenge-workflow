@@ -13,7 +13,6 @@
                 <th>Message</th>
                 <th>DateTime</th>
                 <th>Status</th>
-                <th>Priority</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -25,7 +24,6 @@
                 <td>{{ ticket.message }}</td>
                 <td>{{ ticket.dateTime ? ticket.dateTime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ ticket.status }}</td>
-                <td>{{ ticket.priority ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('tickets_show', {'id': ticket.id}) }}">show</a>
                     <a href="{{ path('tickets_edit', {'id': ticket.id}) }}">edit</a>
