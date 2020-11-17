@@ -1,0 +1,10 @@
+#wrapper {
+    padding: 0;
+}
+
+#menu {
+    background-color: darkgrey;
+    width: 250px;
+    height: 100%;
+    margin: 0;
+}
