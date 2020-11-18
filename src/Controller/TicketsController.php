@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\User;
 
 /**
  * @Route("/tickets")
@@ -26,6 +27,20 @@ class TicketsController extends AbstractController
         $this->session = $session;
         $this->usersRepository = $repository;
     }
+
+
+//THIS FUNCTION DOESN'T WORK YET
+    public function checkVerified()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $verified = $entityManager->getRepository(Users::class)->findOneBy(['is_verified' => 1 ]);
+        if ($this->getUser() != $verified){
+        echo "Your email has not yet been verified";
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+
 
     /**
      *
