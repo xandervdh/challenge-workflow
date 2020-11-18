@@ -30,7 +30,6 @@ class UsersType extends AbstractType
                 'multiple' => true,
                 'required' => true,
             ))
-            ->add('password')
             ->add('firstName')
             ->add('lastName');
     }

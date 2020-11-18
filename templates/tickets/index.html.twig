@@ -1,20 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends 'menu.html.twig' %}
 
 {% block title %}Tickets index{% endblock %}
-
 {% block body %}
-    <h1>Tickets index</h1>
 
-    <table class="table">
+<div class="tableWrapper">
+<h1>Tickets index</h1>
+    <table class="overview">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Message</th>
-                <th>DateTime</th>
-                <th>Status</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Message</th>
+            <th>DateTime</th>
+            <th>Status</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
 
@@ -27,7 +27,6 @@
                 <td>{{ ticket.status }}</td>
                 <td>
                     <a href="{{ path('tickets_show', {'id': ticket.id}) }}">show</a>
-                    <a href="{{ path('tickets_edit', {'id': ticket.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -37,6 +36,6 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
 
-    <a href="{{ path('tickets_new') }}">Create new</a>
 {% endblock %}
