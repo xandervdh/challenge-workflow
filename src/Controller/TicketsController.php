@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\Tickets;
 use App\Entity\Users;
 use App\Form\TicketsType;
+use App\Repository\CommentsRepository;
 use App\Repository\TicketsRepository;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -128,10 +130,11 @@ class TicketsController extends AbstractController
     /**
      * @Route("/{id}", name="tickets_show", methods={"GET"})
      */
-    public function show(Tickets $ticket): Response
+    public function show(Tickets $ticket, CommentsRepository $commentsRepository, $id): Response
     {
         return $this->render('tickets/show.html.twig', [
             'ticket' => $ticket,
+            'comments' => $commentsRepository->findByTicketId($id),
         ]);
     }
 
