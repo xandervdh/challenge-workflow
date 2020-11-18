@@ -10,6 +10,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,23 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 class UsersController extends AbstractController
 {
     private $resetPasswordHelper;
+    private $name;
+    private $session;
+    private $usersRepository;
+
+    /**
+     * UsersController constructor.
+     * @param $name
+     */
+    public function __construct(SessionInterface $session, UsersRepository $repository)
+    {
+        $this->session = $session;
+        $this->usersRepository = $repository;
+        $email = $this->session->get('_security.last_username');
+        $user = $this->usersRepository->findOneByEmail($email);
+        $this->name = $user->getFirstName();
+    }
+
 
     /**
      * @Route("/", name="users_index", methods={"GET"})
@@ -33,6 +51,7 @@ class UsersController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
         return $this->render('users/index.html.twig', [
             'users' => $usersRepository->findAll(),
+            'name' => $this->name,
         ]);
     }
 
