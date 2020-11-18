@@ -8,13 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomepageController extends AbstractController
+class DashboardController extends AbstractController
 {
     private $session;
     private $usersRepository;
 
     /**
-     * HomepageController constructor.
+     * DashboardController constructor.
      * @param $session
      */
     public function __construct(SessionInterface $session, UsersRepository $repository)
@@ -25,18 +25,18 @@ class HomepageController extends AbstractController
 
 
     /**
-    * @Route("/", name="homepage")
+    * @Route("/dashboard", name="dashboard")
     */
     public function index()
     {
         $email = $this->session->get('_security.last_username');
         $user = $this->usersRepository->findOneByEmail($email);
-        return $this->render('homepage/index.html.twig', [
+        return $this->render('dashboard/index.html.twig', [
             'name' => $user->getFirstName(),
         ]);
     }
 //    /**
-//     * @Route("/homepage", name="homepage")
+//     * @Route("/dashboard", name="dashboard")
 //     */
     /*public function index(): Response
     {
