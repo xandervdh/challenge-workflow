@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ResetPasswordRequest;
 use App\Entity\Users;
 use App\Form\UsersType;
 use App\Repository\UsersRepository;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+
 /**
  *
  * @Route("/users")
@@ -39,8 +41,15 @@ class UsersController extends AbstractController
 
     /**
      * @Route("/new", name="users_new", methods={"GET","POST"})
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param MailerInterface $mailer
+     * @param $expiresAt
+     * @param $selector
+     * @param $hashedtoken
+     * @return Response
      */
-    public function new(Request $request ,UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer): Response
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer): Response
     {
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
         $user = new Users();
@@ -49,29 +58,33 @@ class UsersController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $randomBit = $this->readable_random_string();
+
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $random = random_bytes(10)
+                   $randomBit
                 ));
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-        /*
+
+
+
             $email = (new TemplatedEmail())
                 ->from(new Address('xandervanderherten@gmail.com', 'tomato bot'))
                 ->to($user->getEmail())
                 ->subject('Your password reset request')
-                ->htmlTemplate('reset_password/email.html.twig')
+                ->htmlTemplate('reset_password/emailAgent.html.twig')
                 ->context([
-                    'resetToken' => $resetToken,
-                    'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+                    'randomBit' => $randomBit,
                 ])
-                
+                ;
 
-                $mailer->send($email);
-            ;
-        */
+            $mailer->send($email);
+
+
             return $this->redirectToRoute('users_index');
         }
 
@@ -79,7 +92,6 @@ class UsersController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
-
 
 
     }
@@ -122,12 +134,31 @@ class UsersController extends AbstractController
     public function delete(Request $request, Users $user): Response
     {
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('users_index');
+    }
+
+    function readable_random_string($length = 6)
+    {
+        $string = '';
+        $vowels = array("a","e","i","o","u");
+        $consonants = array(
+            'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm',
+            'n', 'p', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'
+        );
+
+        $max = $length / 2;
+        for ($i = 1; $i <= $max; $i++)
+        {
+            $string .= $consonants[rand(0,19)];
+            $string .= $vowels[rand(0,4)];
+        }
+
+        return $string;
     }
 }
