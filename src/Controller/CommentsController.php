@@ -47,9 +47,9 @@ class CommentsController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="comments_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="comments_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, $id): Response
     {
         $comment = new Comments();
         $form = $this->createForm(CommentsType::class, $comment);
@@ -58,14 +58,14 @@ class CommentsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userId = $this->session->getId();
             $user = $this->repository->findOneById($userId);
-            $ticket = $this->ticket->findOneBy(['id' => 3]);
+            $ticket = $this->ticket->findOneBy(['id' => $id]);
             $comment->setUserId($user);
             $comment->setTicketId($ticket);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('comments_index');
+            return $this->redirectToRoute('tickets_show', ['id' => $id]);
         }
 
         return $this->render('comments/new.html.twig', [

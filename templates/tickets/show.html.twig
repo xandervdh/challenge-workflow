@@ -39,25 +39,13 @@
     <a href="{{ path('tickets_edit', {'id': ticket.id}) }}">edit</a>
 
     {{ include('tickets/_delete_form.html.twig') }}
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Comment</th>
-            <th>IsPrivate</th>
-            <th>actions</th>
-        </tr>
-        </thead>
+    <table class="overview">
+
         <tbody>
         {% for comment in comments %}
             <tr>
-                <td>{{ comment.id }}</td>
                 <td>{{ comment.comment }}</td>
                 <td>{{ comment.isPrivate ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('comments_show', {'id': comment.id}) }}">show</a>
-                    <a href="{{ path('comments_edit', {'id': comment.id}) }}">edit</a>
-                </td>
             </tr>
         {% else %}
             <tr>
@@ -66,4 +54,5 @@
         {% endfor %}
         </tbody>
     </table>
+    <a href="{{ path('comments_new', {'id': ticket.id}) }}">Create new comment</a>
 {% endblock %}
