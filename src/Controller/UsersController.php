@@ -6,11 +6,16 @@ use App\Entity\Users;
 use App\Form\UsersType;
 use App\Repository\UsersRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 /**
  *
  * @Route("/users")
@@ -18,6 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UsersController extends AbstractController
 {
+    private $resetPasswordHelper;
+
     /**
      * @Route("/", name="users_index", methods={"GET"})
      */
@@ -29,21 +36,42 @@ class UsersController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/new", name="users_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request ,UserPasswordEncoderInterface $passwordEncoder, MailerInterface $mailer): Response
     {
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
         $user = new Users();
         $form = $this->createForm(UsersType::class, $user);
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $random = random_bytes(10)
+                ));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+        /*
+            $email = (new TemplatedEmail())
+                ->from(new Address('xandervanderherten@gmail.com', 'tomato bot'))
+                ->to($user->getEmail())
+                ->subject('Your password reset request')
+                ->htmlTemplate('reset_password/email.html.twig')
+                ->context([
+                    'resetToken' => $resetToken,
+                    'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
+                ])
+                
 
+                $mailer->send($email);
+            ;
+        */
             return $this->redirectToRoute('users_index');
         }
 
@@ -51,6 +79,9 @@ class UsersController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
+
+
+
     }
 
     /**
