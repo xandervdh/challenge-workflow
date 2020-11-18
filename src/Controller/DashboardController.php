@@ -12,15 +12,17 @@ class DashboardController extends AbstractController
 {
     private $session;
     private $usersRepository;
+    private $verified;
 
     /**
      * DashboardController constructor.
      * @param $session
      */
-    public function __construct(SessionInterface $session, UsersRepository $repository)
+    public function __construct(SessionInterface $session, UsersRepository $repository, VerifyController $verified)
     {
         $this->session = $session;
         $this->usersRepository = $repository;
+        $this->verified = $verified;
     }
 
 
@@ -29,6 +31,9 @@ class DashboardController extends AbstractController
     */
     public function index()
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
         $email = $this->session->get('_security.last_username');
         $user = $this->usersRepository->findOneByEmail($email);
         return $this->render('dashboard/index.html.twig', [

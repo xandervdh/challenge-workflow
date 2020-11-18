@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use App\Controller\VerifyController;
 
 /**
  *
@@ -30,18 +31,20 @@ class UsersController extends AbstractController
     private $name;
     private $session;
     private $usersRepository;
+    private $verified;
 
     /**
      * UsersController constructor.
      * @param $name
      */
-    public function __construct(SessionInterface $session, UsersRepository $repository)
+    public function __construct(SessionInterface $session, UsersRepository $repository, VerifyController $verified)
     {
         $this->session = $session;
         $this->usersRepository = $repository;
         $email = $this->session->get('_security.last_username');
         $user = $this->usersRepository->findOneByEmail($email);
         $this->name = $user->getFirstName();
+        $this->verified = $verified;
     }
 
 
@@ -50,6 +53,9 @@ class UsersController extends AbstractController
      */
     public function index(UsersRepository $usersRepository): Response
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
         return $this->render('users/index.html.twig', [
             'users' => $usersRepository->findAll(),
