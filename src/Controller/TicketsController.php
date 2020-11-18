@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\User;
+use App\Controller\VerifyController;
 
 /**
  * @Route("/tickets")
@@ -22,29 +22,17 @@ class TicketsController extends AbstractController
     private $session;
     private $usersRepository;
     private $name;
+    private $verified;
 
-    public function __construct(SessionInterface $session, UsersRepository $repository)
+    public function __construct(SessionInterface $session, UsersRepository $repository, VerifyController $verified)
     {
         $this->session = $session;
         $this->usersRepository = $repository;
         $email = $this->session->get('_security.last_username');
         $user = $this->usersRepository->findOneByEmail($email);
         $this->name = $user->getFirstName();
+        $this->verified = $verified;
     }
-
-
-//THIS FUNCTION DOESN'T WORK YET
-    public function checkVerified()
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $verified = $entityManager->getRepository(Users::class)->findOneBy(['is_verified' => 1 ]);
-        if ($this->getUser() != $verified){
-        echo "Your email has not yet been verified";
-            return $this->redirectToRoute('app_login');
-        }
-    }
-
-
 
     /**
      *
@@ -52,6 +40,10 @@ class TicketsController extends AbstractController
      */
     public function indexAction(TicketsRepository $ticketsRepository)
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
+
         if ($this->isGranted('ROLE_MANAGER')) {
             return $this->indexManager($ticketsRepository);
         } else if ($this->isGranted('ROLE_SECOND_LINE_AGENT')) {
