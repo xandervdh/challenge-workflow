@@ -30,6 +30,7 @@ table.overview {
 }
 table.overview td, table.overview th {
     border: 2px solid #FFFFFF;
+    border-radius: 13px;
     padding: 3px 2px;
 }
 table.overview tbody td {
