@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use App\Repository\UsersRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Security\EmailVerifier;
 class VerifyController extends AbstractController
 {
-    private  $session;
+    private $session;
     private $usersRepository;
     private $newLink;
 
@@ -31,8 +33,18 @@ class VerifyController extends AbstractController
      * @Route("/verify", name="verify")
      */
     public function index(): Response
+
     {
-        $this->newLink->sendEmailConfirmation();
+        $email = $this->session->get('_security.last_username');
+        $user = $this->usersRepository->findOneByEmail($email);
+        $this->newLink->sendEmailConfirmation("app_login", $user,
+            (new TemplatedEmail())
+                ->from(new Address('xandervanderherten@gmail.com', 'tomato bot'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
+
         return $this->render('verify/index.html.twig', [
             'controller_name' => 'VerifyController',
         ]);
