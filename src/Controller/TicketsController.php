@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\User;
 
 /**
  * @Route("/tickets")
@@ -20,12 +21,30 @@ class TicketsController extends AbstractController
 {
     private $session;
     private $usersRepository;
+    private $name;
 
     public function __construct(SessionInterface $session, UsersRepository $repository)
     {
         $this->session = $session;
         $this->usersRepository = $repository;
+        $email = $this->session->get('_security.last_username');
+        $user = $this->usersRepository->findOneByEmail($email);
+        $this->name = $user->getFirstName();
     }
+
+
+//THIS FUNCTION DOESN'T WORK YET
+    public function checkVerified()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $verified = $entityManager->getRepository(Users::class)->findOneBy(['is_verified' => 1 ]);
+        if ($this->getUser() != $verified){
+        echo "Your email has not yet been verified";
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+
 
     /**
      *
@@ -44,6 +63,7 @@ class TicketsController extends AbstractController
         }
         return $this->render('tickets/index.html.twig', [
         'tickets' => 'you are not allowed here',
+            'name' => $this->name,
         ]);
     }
 
@@ -52,6 +72,7 @@ class TicketsController extends AbstractController
     {
         return $this->render('tickets/index.html.twig', [
             'tickets' => $ticketsRepository->findAll(),
+            'name' => $this->name,
         ]);
     }
 
@@ -59,6 +80,7 @@ class TicketsController extends AbstractController
     {
         return $this->render('tickets/index.html.twig', [
             'tickets' => $ticketsRepository->findByStatus('escalated'),
+            'name' => $this->name,
         ]);
     }
 
@@ -66,14 +88,18 @@ class TicketsController extends AbstractController
     {
         return $this->render('tickets/index.html.twig', [
             'tickets' => $ticketsRepository->findByStatus('open'),
+            'name' => $this->name,
         ]);
     }
 
-    private function indexCustomer(TicketsRepository $ticketsRepository): Response
+    private function indexCustomer(): Response
     {
+        $email = $this->session->get('_security.last_username');
+        $user = $this->usersRepository->findOneByEmail($email);
+
         return $this->render('tickets/index.html.twig', [
-            'tickets' => $ticketsRepository->findByStatus('closed'),
-            'succes' => 'sucesses my man',
+            'tickets' => $user->getTickets(),
+            'name' => $this->name,
         ]);
     }
 
@@ -100,11 +126,10 @@ class TicketsController extends AbstractController
 
             return $this->redirectToRoute('tickets_index');
         }
-        $message = $this->session->get('_security.last_username');
-        echo $message;
         return $this->render('tickets/new.html.twig', [
-            'ticket' => $ticket,
+
             'form' => $form->createView(),
+            'name' => $this->name
         ]);
     }
 
