@@ -35,8 +35,7 @@ class VerifyController extends AbstractController
     public function index(): Response
 
     {
-        $email = $this->session->get('_security.last_username');
-        $user = $this->usersRepository->findOneByEmail($email);
+        $user = $this->getUser();
         $this->newLink->sendEmailConfirmation("app_login", $user,
             (new TemplatedEmail())
                 ->from(new Address('xandervanderherten@gmail.com', 'tomato bot'))
@@ -52,10 +51,9 @@ class VerifyController extends AbstractController
 
     public function checkVerified()
     {
-        $email = $this->session->get('_security.last_username');
-        $user = $this->usersRepository->findOneByEmail($email);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
         return $user->isVerified();
-
     }
 
 }

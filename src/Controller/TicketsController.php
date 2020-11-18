@@ -30,9 +30,6 @@ class TicketsController extends AbstractController
     {
         $this->session = $session;
         $this->usersRepository = $repository;
-        $email = $this->session->get('_security.last_username');
-        $user = $this->usersRepository->findOneByEmail($email);
-        $this->name = $user->getFirstName();
         $this->verified = $verified;
     }
 
@@ -42,6 +39,7 @@ class TicketsController extends AbstractController
      */
     public function indexAction(TicketsRepository $ticketsRepository)
     {
+
         if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
         }
@@ -53,11 +51,10 @@ class TicketsController extends AbstractController
         } else if ($this->isGranted('ROLE_AGENT')) {
             return $this->indexAgent($ticketsRepository);
         } else if ($this->isGranted('ROLE_CUSTOMER')) {
-            return $this->indexCustomer($ticketsRepository);
+            return $this->indexCustomer();
         }
         return $this->render('tickets/index.html.twig', [
         'tickets' => 'you are not allowed here',
-            'name' => $this->name,
         ]);
     }
 
@@ -66,7 +63,6 @@ class TicketsController extends AbstractController
     {
         return $this->render('tickets/index.html.twig', [
             'tickets' => $ticketsRepository->findAll(),
-            'name' => $this->name,
         ]);
     }
 
@@ -74,7 +70,6 @@ class TicketsController extends AbstractController
     {
         return $this->render('tickets/index.html.twig', [
             'tickets' => $ticketsRepository->findByStatus('escalated'),
-            'name' => $this->name,
         ]);
     }
 
@@ -82,7 +77,6 @@ class TicketsController extends AbstractController
     {
         return $this->render('tickets/index.html.twig', [
             'tickets' => $ticketsRepository->findByStatus('open'),
-            'name' => $this->name,
         ]);
     }
 
@@ -102,6 +96,9 @@ class TicketsController extends AbstractController
      */
     public function new(Request $request): Response
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
         $ticket = new Tickets();
         $form = $this->createForm(TicketsType::class, $ticket);
 
@@ -132,6 +129,9 @@ class TicketsController extends AbstractController
      */
     public function show(Tickets $ticket, CommentsRepository $commentsRepository, $id): Response
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
         return $this->render('tickets/show.html.twig', [
             'ticket' => $ticket,
             'comments' => $commentsRepository->findByTicketId($id),
@@ -143,6 +143,9 @@ class TicketsController extends AbstractController
      */
     public function edit(Request $request, Tickets $ticket): Response
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
         $form = $this->createForm(TicketsType::class, $ticket);
         $form->handleRequest($request);
 
@@ -163,6 +166,9 @@ class TicketsController extends AbstractController
      */
     public function delete(Request $request, Tickets $ticket): Response
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
         if ($this->isCsrfTokenValid('delete'.$ticket->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ticket);
