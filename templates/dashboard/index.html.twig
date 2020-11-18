@@ -1,18 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'menu.html.twig' %}
 
 {% block title %}Home{% endblock %}
 
 
-{% block body %}
-
-    <div id="wrapper">
-        <div id="menu">
-            <h1>Hello {{ name }}</h1>
-            <a href="{{ path('tickets_index') }}">Tickets</a><br>
-            {% if is_granted('ROLE_MANAGER') %}
-                <a href="{{ path('users_index') }}">Users</a>
-            {% endif %}
-        </div>
-    </div>
-
-{% endblock %}
+{% block body %}{% endblock %}

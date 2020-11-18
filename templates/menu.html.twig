@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}<link href="{{ asset('/style/style.css') }}" rel="stylesheet" /> {% endblock %}
+    </head>
+    <body>
+        {% block menu %}
+            <div id="wrapper">
+                <div id="menu">
+                    <h1>Hello {{ name }}</h1>
+                    <a href="{{ path('dashboard') }}">Dashboard</a><br>
+                    <a href="{{ path('tickets_index') }}">Tickets</a><br>
+                    {% if is_granted('ROLE_CUSTOMER') %}
+                        <a href="{{ path('tickets_new') }}">Create new</a>
+                    {% endif %}
+                    {% if is_granted('ROLE_MANAGER') %}
+                        <a href="{{ path('users_index') }}">Users</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
