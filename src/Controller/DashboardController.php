@@ -34,11 +34,7 @@ class DashboardController extends AbstractController
         if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
         }
-        $email = $this->session->get('_security.last_username');
-        $user = $this->usersRepository->findOneByEmail($email);
-        return $this->render('dashboard/index.html.twig', [
-            'name' => $user->getFirstName(),
-        ]);
+        return $this->render('dashboard/index.html.twig');
     }
 //    /**
 //     * @Route("/dashboard", name="dashboard")
