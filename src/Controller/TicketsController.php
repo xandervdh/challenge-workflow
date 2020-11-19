@@ -177,4 +177,23 @@ class TicketsController extends AbstractController
 
         return $this->redirectToRoute('tickets_index');
     }
+
+    /**
+     * @Route("/agents/list", name="tickets_agent")
+     */
+    public function agentTickets(UsersRepository $repo, TicketsRepository $tRepo): Response
+    {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
+
+        $email = $this->getUser()->getUsername();
+        $user = $repo->findOneByEmail($email);
+        $id = $user->getId();
+        $tickets = $tRepo->findByAssignedId($id);
+
+        return $this->render('tickets/agent.html.twig', [
+            'tickets' => $tickets,
+        ]);
+    }
 }

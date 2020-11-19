@@ -37,9 +37,8 @@
             </tbody>
         </table>
 
-        <a href="{{ path('tickets_index') }}">back to list</a>
-
         <table class="overview">
+            {% if ticket.status == 'in progress' %}
 <h1>Comments</h1>
             <tbody>
             {% for comment in comments %}
@@ -56,7 +55,9 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href="{{ path('comments_new', {'id': ticket.id}) }}">Create new comment</a>
+        <a href="{{ path('comments_new', {'id': ticket.id}) }}">Create new comment</a><br>
+        {% endif %}
+        <a href="{{ path('tickets_index') }}">back to list</a>
     </div>
 
 {% endblock %}
