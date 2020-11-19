@@ -23,16 +23,18 @@ class CommentsController extends AbstractController
     private $session;
     private $repository;
     private $ticket;
+    private $verified;
 
     /**
      * CommentsController constructor.
      * @param $session
      */
-    public function __construct(SessionInterface $session, UsersRepository $repo, TicketsRepository $ticket)
+    public function __construct(SessionInterface $session, UsersRepository $repo, TicketsRepository $ticket, VerifyController $verified)
     {
         $this->session = $session;
         $this->repository = $repo;
         $this->ticket = $ticket;
+        $this->verified = $verified;
     }
 
 
@@ -41,6 +43,10 @@ class CommentsController extends AbstractController
      */
     public function index(CommentsRepository $commentsRepository): Response
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
+
         return $this->render('comments/index.html.twig', [
             'comments' => $commentsRepository->findAll(),
         ]);
@@ -79,6 +85,9 @@ class CommentsController extends AbstractController
      */
     public function show(Comments $comment): Response
     {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
         return $this->render('comments/show.html.twig', [
             'comment' => $comment,
         ]);
@@ -89,6 +98,7 @@ class CommentsController extends AbstractController
      */
     public function edit(Request $request, Comments $comment): Response
     {
+
         $form = $this->createForm(CommentsType::class, $comment);
         $form->handleRequest($request);
 

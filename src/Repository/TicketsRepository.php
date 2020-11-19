@@ -40,13 +40,24 @@ class TicketsRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->andWhere('t.id = :val')
             ->setParameter('val', $value)
-            ->orderBy('t.customer_id', 'ASC')
+            ->orderBy('t.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
             ;
     }
 
+    public function findByAssignedId($value)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.assigned_to = :val')
+            ->setParameter('val', $value)
+            ->orderBy('t.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     /*
     public function findOneBySomeField($value): ?Tickets

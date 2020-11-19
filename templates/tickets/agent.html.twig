@@ -1,0 +1,41 @@
+{% extends 'menu.html.twig' %}
+
+{% block title %}Tickets index{% endblock %}
+{% block body %}
+    <div class="tableWrapper">
+        <h1>Tickets index</h1>
+        <table class="overview">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Message</th>
+                <th>DateTime</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.id }}</td>
+                    <td>{{ ticket.title }}</td>
+                    <td>{{ ticket.message }}</td>
+                    <td>{{ ticket.dateTime ? ticket.dateTime|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ ticket.status }}</td>
+                    <td>
+                        <a href="{{ path('tickets_show', {'id': ticket.id}) }}">show</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}
