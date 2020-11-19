@@ -9,6 +9,18 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private $verified;
+
+    /**
+     * SecurityController constructor.
+     * @param $verified
+     */
+    public function __construct(VerifyController $verified)
+    {
+        $this->verified = $verified;
+    }
+
+
     /**
      * @Route("/", name="app_login")
      */
@@ -17,7 +29,7 @@ class SecurityController extends AbstractController
 
         $forgotPassword = $this->generateUrl('app_forgot_password_request');
 
-      if ($this->getUser()) {
+      if ($this->getUser() && $this->verified->checkVerified()) {
              return $this->redirectToRoute('dashboard');
         }
 
