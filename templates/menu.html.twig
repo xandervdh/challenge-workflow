@@ -14,12 +14,15 @@
                     {% endif %}
                     <a href="{{ path('dashboard') }}">Dashboard</a><br>
                     <a href="{{ path('tickets_index') }}">Tickets</a><br>
+                    {% if is_granted('ROLE_AGENT') %}
+                        <a href="{{ path('tickets_agent') }}">My tickets</a><br>
+                    {% endif %}
                     {% if is_granted('ROLE_CUSTOMER') %}
-                        <a href="{{ path('tickets_new') }}">Create new</a>
+                        <a href="{{ path('tickets_new') }}">Create new ticket</a>
                     {% endif %}
                     {% if is_granted('ROLE_MANAGER') %}
                         <a href="{{ path('users_index') }}">Agents</a><br>
-                        <a href="{{ path('users_new') }}">New agent</a>
+                        <a href="{{ path('users_new') }}">Create new agent</a>
                     {% endif %}
                 </div>
             </div>

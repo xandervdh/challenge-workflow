@@ -39,14 +39,15 @@
 
         <a href="{{ path('tickets_index') }}">back to list</a>
 
-        {{ include('tickets/_delete_form.html.twig') }}
         <table class="overview">
-
+<h1>Comments</h1>
             <tbody>
             {% for comment in comments %}
                 <tr>
                     <td>{{ comment.comment }}</td>
-                    <td>{{ comment.isPrivate ? 'Yes' : 'No' }}</td>
+                    {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_AGENT') or is_granted('ROLE_SECOND_LINE_AGENT') %}
+                    <td>{{ comment.isPrivate ? 'Private' : 'Not private' }}</td>
+                    {% endif %}
                 </tr>
             {% else %}
                 <tr>
