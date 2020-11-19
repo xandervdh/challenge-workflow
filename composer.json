@@ -91,9 +91,6 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "compile": [
-            "bin/console assetic:dump"
-        ]
     },
     "conflict": {
         "symfony/symfony": "*"
