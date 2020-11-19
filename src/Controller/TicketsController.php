@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Comments;
 use App\Entity\Tickets;
 use App\Entity\Users;
+use App\Form\StatusType;
 use App\Form\TicketsType;
 use App\Repository\CommentsRepository;
 use App\Repository\TicketsRepository;
@@ -132,7 +133,7 @@ class TicketsController extends AbstractController
         if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
         }
-        $form = $this->createForm(TicketsType::class, $ticket);
+        $form = $this->createForm(StatusType::class, $ticket);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
