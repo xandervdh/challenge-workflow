@@ -59,7 +59,11 @@
         </table>
         <a href="{{ path('comments_new', {'id': ticket.id}) }}">Create new comment</a><br>
         {% endif %}
+        {% if ticket.status == 'open' %}
         <a href="{{ path('tickets_index') }}">back to list</a>
+        {% else %}
+        <a href="{{ path('tickets_agent') }}">back to list</a>
+        {% endif %}
     </div>
 
 {% endblock %}
