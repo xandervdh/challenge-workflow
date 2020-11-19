@@ -1,12 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'menu.html.twig' %}
 
 {% block title %}Users{% endblock %}
 
 {% block body %}
-    <h1>Users</h1>
+    <div class="tableWrapper">
+        <h1>User</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="overview">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ user.id }}</td>
@@ -19,8 +20,8 @@
                 <th>Roles</th>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
             </tr>
-            <th>password</th>
-            <td>{{ user.password }}</td>
+                <th>password</th>
+                <td>{{ user.password }}</td>
             <tr>
                 <th>FirstName</th>
                 <td>{{ user.firstName }}</td>
@@ -33,12 +34,13 @@
                 <th>IsVerified</th>
                 <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('users_index') }}">back to list</a>
+        <a href="{{ path('users_index') }}">back to list</a>
 
-    <a href="{{ path('users_edit', {'id': user.id}) }}">edit</a>
+        <a href="{{ path('users_edit', {'id': user.id}) }}">edit</a>
 
-    {{ include('users/_delete_form.html.twig') }}
+        {{ include('users/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

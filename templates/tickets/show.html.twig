@@ -1,12 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'menu.html.twig' %}
 
 {% block title %}Tickets{% endblock %}
 
 {% block body %}
-    <h1>Tickets</h1>
+    <div class="tableWrapper">
+        <h1>Ticket</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="overview">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ ticket.id }}</td>
@@ -27,32 +28,34 @@
                 <th>Status</th>
                 <td>{{ ticket.status }}</td>
             </tr>
-            {% if is_granted('ROLE_MANAGER', 'ROLE_AGENT', 'ROLE_SECOND_LINE_AGENT')  %}
-            <tr>
-                <th>Priority</th>
-                <td>{{ ticket.priority ? 'Yes' : 'No' }}</td>
-            </tr>
-        {% endif %}
-        </tbody>
-    </table>
+            {% if is_granted('ROLE_AGENT') or is_granted('ROLE_MANAGER') or is_granted('ROLE_SECOND_LINE_AGENT')  %}
+                <tr>
+                    <th>Priority</th>
+                    <td>{{ ticket.priority ? 'Yes' : 'No' }}</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('tickets_index') }}">back to list</a>
+        <a href="{{ path('tickets_index') }}">back to list</a>
 
-    {{ include('tickets/_delete_form.html.twig') }}
-    <table class="overview">
+        {{ include('tickets/_delete_form.html.twig') }}
+        <table class="overview">
 
-        <tbody>
-        {% for comment in comments %}
-            <tr>
-                <td>{{ comment.comment }}</td>
-                <td>{{ comment.isPrivate ? 'Yes' : 'No' }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('comments_new', {'id': ticket.id}) }}">Create new comment</a>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.comment }}</td>
+                    <td>{{ comment.isPrivate ? 'Yes' : 'No' }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('comments_new', {'id': ticket.id}) }}">Create new comment</a>
+    </div>
+
 {% endblock %}
