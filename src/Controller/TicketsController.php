@@ -127,14 +127,23 @@ class TicketsController extends AbstractController
     /**
      * @Route("/{id}", name="tickets_show", methods={"GET"})
      */
-    public function show(Tickets $ticket, CommentsRepository $commentsRepository, $id): Response
+    public function show(Tickets $ticket, CommentsRepository $commentsRepository, $id, Request $request): Response
     {
         if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
         }
+        $form = $this->createForm(TicketsType::class, $ticket);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('tickets_index');
+        }
         return $this->render('tickets/show.html.twig', [
             'ticket' => $ticket,
             'comments' => $commentsRepository->findByTicketId($id),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -195,5 +204,25 @@ class TicketsController extends AbstractController
         return $this->render('tickets/agent.html.twig', [
             'tickets' => $tickets,
         ]);
+    }
+
+    /**
+     * @Route("/{id}", name="tickets_update", methods={"POST"})
+     */
+    public function claim($id, UsersRepository $repo): Response
+    {
+        if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $ticket = $entityManager->getRepository(Tickets::class)->find($id);
+        $email = $this->getUser()->getUsername();
+        $user = $repo->findOneByEmail($email);
+        $ticket->setStatus('in progress');
+        $ticket->setAssignedTo($user);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tickets_index');
     }
 }

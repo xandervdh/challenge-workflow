@@ -36,9 +36,11 @@
             {% endif %}
             </tbody>
         </table>
-
-        <table class="overview">
+        {% if ticket.status == 'open' %}
+            {{ include('tickets/_form.html.twig', {'button_label': 'Claim'}) }}
+        {% endif %}
             {% if ticket.status == 'in progress' %}
+                <table class="overview">
 <h1>Comments</h1>
             <tbody>
             {% for comment in comments %}
