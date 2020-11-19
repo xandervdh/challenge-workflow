@@ -10,5 +10,8 @@
 
 <div class="example-wrapper">
     <h1>YOU ARE NOT VERIFIED</h1>
+    <p>Please verify your email address before continuing, a new verification email has been sent to your emailaddress.</p>
+   <!-- <a href="{{ path('app_login') }}">back to login</a>-->
+    <input type="button" onclick="location.href = {{ path('app_login') }};" value="Back to login"/>
 </div>
 {% endblock %}
