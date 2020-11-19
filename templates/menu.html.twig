@@ -18,7 +18,8 @@
                         <a href="{{ path('tickets_new') }}">Create new</a>
                     {% endif %}
                     {% if is_granted('ROLE_MANAGER') %}
-                        <a href="{{ path('users_index') }}">Users</a>
+                        <a href="{{ path('users_index') }}">Agents</a><br>
+                        <a href="{{ path('users_new') }}">New agent</a>
                     {% endif %}
                 </div>
             </div>
