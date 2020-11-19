@@ -92,7 +92,7 @@
             "@auto-scripts"
         ],
         "compile": [
-            "app/console assetic:dump"
+            "bin/console assetic:dump"
         ]
     },
     "conflict": {
