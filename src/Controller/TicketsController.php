@@ -143,20 +143,10 @@ class TicketsController extends AbstractController
             return $this->redirectToRoute('tickets_index');
         }
 
-        $formTwo = $this->createForm(UpdateType::class, $ticket);
-        $formTwo->handleRequest($request);
-
-        if ($formTwo->isSubmitted() && $formTwo->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('tickets_index');
-        }
-
         return $this->render('tickets/show.html.twig', [
             'ticket' => $ticket,
             'comments' => $commentsRepository->findByTicketId($id),
             'form' => $form->createView(),
-            'formTwo' => $formTwo->createView(),
         ]);
     }
 
