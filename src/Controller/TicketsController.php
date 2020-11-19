@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Comments;
 use App\Entity\Tickets;
 use App\Entity\Users;
+use App\Form\StatusType;
 use App\Form\TicketsType;
+use App\Form\UpdateType;
 use App\Repository\CommentsRepository;
 use App\Repository\TicketsRepository;
 use App\Repository\UsersRepository;
@@ -132,7 +134,7 @@ class TicketsController extends AbstractController
         if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
         }
-        $form = $this->createForm(TicketsType::class, $ticket);
+        $form = $this->createForm(StatusType::class, $ticket);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -140,10 +142,21 @@ class TicketsController extends AbstractController
 
             return $this->redirectToRoute('tickets_index');
         }
+
+        $formTwo = $this->createForm(UpdateType::class, $ticket);
+        $formTwo->handleRequest($request);
+
+        if ($formTwo->isSubmitted() && $formTwo->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('tickets_index');
+        }
+
         return $this->render('tickets/show.html.twig', [
             'ticket' => $ticket,
             'comments' => $commentsRepository->findByTicketId($id),
             'form' => $form->createView(),
+            'formTwo' => $formTwo->createView(),
         ]);
     }
 
