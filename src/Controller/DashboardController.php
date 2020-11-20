@@ -33,15 +33,7 @@ class DashboardController extends AbstractController
     */
     public function index(LoggerInterface $logger)
     {
-        try {
-            if( !$this->verified->checkVerified()){
-                return $this->redirectToRoute('verify');
-            }
-            return $this->render('dashboard/index.html.twig');
-        } catch (\Exception $exception){
-            $logger->error($exception);
-            return $this->render('dashboard/index.html.twig');
-        }
+
         }
 //    /**
 //     * @Route("/dashboard", name="dashboard")
