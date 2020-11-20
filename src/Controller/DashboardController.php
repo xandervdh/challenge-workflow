@@ -3,12 +3,11 @@
 namespace App\Controller;
 
 use App\Repository\UsersRepository;
-use Psr\Log\LoggerInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 class DashboardController extends AbstractController
 {
@@ -31,9 +30,15 @@ class DashboardController extends AbstractController
     /**
     * @Route("/dashboard", name="dashboard")
     */
-    public function index(LoggerInterface $logger)
+    public function index()
     {
 
+            /*if( !$this->verified->checkVerified()){
+                return $this->redirectToRoute('verify');
+            }*/
+
+
+            return $this->render('dashboard/index.html.twig');
         }
 //    /**
 //     * @Route("/dashboard", name="dashboard")
