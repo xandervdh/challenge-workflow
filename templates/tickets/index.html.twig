@@ -43,8 +43,10 @@
 
 
                     {% endif %}
+                    {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_AGENT') or is_granted('ROLE_SECOND_LINE_AGENT') %}
                     {% if ticket.status == 'open' %}
                         <a href="{{ path('tickets_update', {'id': ticket.id}) }}">Claim ticket</a><br>
+                    {% endif %}
                     {% endif %}
                 </td>
             </tr>
