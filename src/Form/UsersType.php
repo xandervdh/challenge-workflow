@@ -23,8 +23,8 @@ class UsersType extends AbstractType
                     'style' => 'margin:5px 0;'),
                 'choices' =>
                     array(
-                        'First Agent' => 'ROLE_FIRSTAGENT',
-                        'Second agent' => 'ROLE_SECONDAGENT',
+                        'First Agent' => 'ROLE_AGENT',
+                        'Second agent' => 'ROLE_SECOND_LINE_AGENT',
                     )
             ,
                 'multiple' => true,

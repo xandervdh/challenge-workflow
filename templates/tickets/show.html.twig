@@ -33,12 +33,15 @@
                     <th>Priority</th>
                     <td>{{ ticket.priority ? 'Yes' : 'No' }}</td>
                 </tr>
+                <tr>
+                    {% if ticket.status == 'open' %}
+                        {{ include('tickets/_form.html.twig', {'button_label': 'Claim'}) }}
+                    {% endif %}
+                </tr>
             {% endif %}
             </tbody>
         </table>
-        {% if ticket.status == 'open' %}
-            {{ include('tickets/_form.html.twig', {'button_label': 'Claim'}) }}
-        {% endif %}
+
             {% if ticket.status == 'in progress' %}
                 <table class="overview">
 <h1>Comments</h1>
