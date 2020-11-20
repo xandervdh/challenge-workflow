@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     {% if ticket.status == 'open' %}
-                        {{ include('tickets/_form.html.twig', {'button_label': 'Claim'}) }}
+                        <a href="{{ path('tickets_update', {'id': ticket.id}) }}">Claim ticket</a><br>
                     {% endif %}
                 </tr>
             {% endif %}
