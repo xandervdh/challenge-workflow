@@ -228,4 +228,13 @@ class TicketsController extends AbstractController
 
         return $this->redirectToRoute('tickets_index');
     }
+    /**
+     * @Route("/status/Change", name="status_edit", methods={"GET","POST"})
+     */
+    public function changeStatus($id, UsersRepository $repo){
+        $entityManager = $this->getDoctrine()->getManager();
+        $ticket = $entityManager->getRepository(Tickets::class)->find($id);
+        $email = $this->getUser()->getUsername();
+        $user = $repo->findOneByEmail($email);
+    }
 }
