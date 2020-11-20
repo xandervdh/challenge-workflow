@@ -219,7 +219,7 @@ class TicketsController extends AbstractController
         $ticket = $entityManager->getRepository(Tickets::class)->find($id);
         $email = $this->getUser()->getUsername();
         $user = $repo->findOneByEmail($email);
-        $ticket->setPriority('1');
+        $ticket->setStatus('in progress');
         $ticket->setAssignedTo($user);
 
         $entityManager->flush();
