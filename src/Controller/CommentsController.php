@@ -55,15 +55,16 @@ class CommentsController extends AbstractController
     /**
      * @Route("/new/{id}", name="comments_new", methods={"GET","POST"})
      */
-    public function new(Request $request, $id): Response
+    public function new(Request $request, $id, UsersRepository $repo): Response
     {
         $comment = new Comments();
         $form = $this->createForm(CommentsType::class, $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userId = $this->session->getId();
-            $user = $this->repository->findOneById($userId);
+            $users = $this->getUser();
+            $email = $users->getUsername();
+            $user = $repo->findOneByEmail($email);
             $ticket = $this->ticket->findOneBy(['id' => $id]);
             $comment->setUserId($user);
             $comment->setTicketId($ticket);
