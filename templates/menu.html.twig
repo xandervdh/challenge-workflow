@@ -3,14 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}<link href="{{ asset('/public/style/style.css') }}" rel="stylesheet" /> {% endblock %}
+        {% block stylesheets %}<link href="{{ asset('/style/style.css') }}" rel="stylesheet" /> {% endblock %}
     </head>
     <body>
         {% block menu %}
             <div id="wrapper">
                 <div id="menu">
+                    <a href="{{ path('app_logout') }}">Logout</a>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <h1>Hello {{ app.user.firstName }}</h1>
+                    <h1>Hello {{ app.user.firstName }}</h1><br>
                     {% endif %}
                     <a href="{{ path('dashboard') }}">Dashboard</a><br>
                     <a href="{{ path('tickets_index') }}">Tickets</a><br>
@@ -24,11 +25,6 @@
                     {% if is_granted('ROLE_MANAGER') %}
                         <a href="{{ path('users_index') }}">Agents</a><br>
                         <a href="{{ path('users_new') }}">Create new agent</a>
-                    {% endif %}
-                    {% if app.user %}
-                        <div class="mb-3">
-                            You are logged in as {{ app.user.firstName }}, <a href="{{ path('app_logout') }}">Logout</a>
-                        </div>
                     {% endif %}
 
                 </div>
