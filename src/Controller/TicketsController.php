@@ -210,7 +210,7 @@ class TicketsController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tickets_update", methods={"POST"})
+     * @Route("/update/{id}", name="tickets_update", methods={"GET"})
      */
     public function claim($id, UsersRepository $repo): Response
     {
