@@ -14,6 +14,7 @@
             <th>DateTime</th>
             <th>Status</th>
             <th>actions</th>
+            <th>priority</th>
         </tr>
         </thead>
         <tbody>
@@ -29,7 +30,7 @@
                     <a href="{{ path('tickets_show', {'id': ticket.id}) }}">show</a>
                 </td>
                 {% if is_granted('ROLE_MANAGER')%}
-                <td> <a href=" ">Priority</a>
+                <td> <a href="{{ path('tickets_priority', {'id': ticket.id}) }}">Priority</a><br>
                 </td>
                 {% endif %}
             </tr>

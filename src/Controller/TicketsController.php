@@ -221,7 +221,7 @@ class TicketsController extends AbstractController
         $ticket = $entityManager->getRepository(Tickets::class)->find($id);
         $email = $this->getUser()->getUsername();
         $user = $repo->findOneByEmail($email);
-        $ticket->setStatus('in progress');
+        $ticket->setPriority('1');
         $ticket->setAssignedTo($user);
 
         $entityManager->flush();
@@ -247,5 +247,19 @@ class TicketsController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('dashboard');
+    }
+
+    /**
+     * @Route("/priority/{id}", name="tickets_priority", methods={"GET"})
+     */
+    public function setPriority($id, UsersRepository $repo): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $ticket = $entityManager->getRepository(Tickets::class)->find($id);
+        $ticket->setPriority(1);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tickets_index');
     }
 }
