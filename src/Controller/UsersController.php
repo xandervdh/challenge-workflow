@@ -41,8 +41,7 @@ class UsersController extends AbstractController
     {
         $this->session = $session;
         $this->usersRepository = $repository;
-        $email = $this->session->get('_security.last_username');
-        $user = $this->usersRepository->findOneByEmail($email);
+        $user = $this->getUser();
         $this->name = $user->getFirstName();
         $this->verified = $verified;
     }

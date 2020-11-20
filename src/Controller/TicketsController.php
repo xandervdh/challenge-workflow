@@ -84,8 +84,7 @@ class TicketsController extends AbstractController
 
     private function indexCustomer(): Response
     {
-        $email = $this->session->get('_security.last_username');
-        $user = $this->usersRepository->findOneByEmail($email);
+        $user = $this->getUser();
 
         return $this->render('tickets/index.html.twig', [
             'tickets' => $user->getTickets(),
@@ -107,8 +106,7 @@ class TicketsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $email = $this->session->get('_security.last_username');
-            $user = $this->usersRepository->findOneByEmail($email);
+            $user = $this->getUser();
             $ticket->addCustomerId($user);
             $ticket->setStatus('open');
             $ticket->setDateTime(new \DateTime());
