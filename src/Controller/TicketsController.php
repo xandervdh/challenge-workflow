@@ -271,7 +271,7 @@ class TicketsController extends AbstractController
         return $this->redirectToRoute('tickets_index');
     }
     */
-
+    /**
      * @Route("/priority/{id}", name="tickets_priority", methods={"GET"})
      */
     public function setPriority($id, UsersRepository $repo): Response
