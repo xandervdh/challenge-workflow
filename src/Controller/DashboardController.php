@@ -31,11 +31,13 @@ class DashboardController extends AbstractController
     */
     public function index()
     {
-        if( !$this->verified->checkVerified()){
-            return $this->redirectToRoute('verify');
+
+            /*if( !$this->verified->checkVerified()){
+                return $this->redirectToRoute('verify');
+            }*/
+
+            return $this->render('dashboard/index.html.twig');
         }
-        return $this->render('dashboard/index.html.twig');
-    }
 //    /**
 //     * @Route("/dashboard", name="dashboard")
 //     */

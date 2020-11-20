@@ -53,9 +53,9 @@ class UsersController extends AbstractController
      */
     public function index(UsersRepository $usersRepository): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
         $this->denyAccessUnlessGranted('ROLE_MANAGER');
         return $this->render('users/index.html.twig', [
             'users' => $usersRepository->findAll(),
