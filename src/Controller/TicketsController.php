@@ -42,9 +42,9 @@ class TicketsController extends AbstractController
     public function indexAction(TicketsRepository $ticketsRepository)
     {
 
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
 
         if ($this->isGranted('ROLE_MANAGER')) {
             return $this->indexManager($ticketsRepository);
@@ -98,9 +98,9 @@ class TicketsController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
         $ticket = new Tickets();
         $form = $this->createForm(TicketsType::class, $ticket);
 

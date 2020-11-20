@@ -29,9 +29,9 @@ class SecurityController extends AbstractController
 
         $forgotPassword = $this->generateUrl('app_forgot_password_request');
 
-      /*if ($this->getUser() && $this->verified->checkVerified()) {
+      if ($this->getUser()) {
              return $this->redirectToRoute('dashboard');
-        }*/
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
