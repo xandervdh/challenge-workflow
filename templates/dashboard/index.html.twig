@@ -5,6 +5,10 @@
     {% if is_granted("ROLE_MANAGER") %}
     <div class="tableWrapper">
         <a href="{{ path('tickets_reset') }}">reset tickets</a>
+        <h1>Total open tickets: {{ open }}</h1>
+        <h1>Total closed tickets: {{ closed }}</h1>
+        <h1>Total reopend tickets: {{ reopend }}</h1>
+        <h1>Percentage of reopened tickets: {{ percentage }}%</h1>
     </div>
     {% endif %}
 {% endblock %}

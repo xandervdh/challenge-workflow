@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\TicketsRepository;
 use App\Repository\UsersRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,16 +28,30 @@ class DashboardController extends AbstractController
 
 
     /**
-    * @Route("/dashboard", name="dashboard")
-    */
-    public function index()
+     * @Route("/dashboard", name="dashboard")
+     */
+    public function index(TicketsRepository $repo)
     {
 
-            /*if( !$this->verified->checkVerified()){
-                return $this->redirectToRoute('verify');
-            }*/
+        /*if( !$this->verified->checkVerified()){
+            return $this->redirectToRoute('verify');
+        }*/
+        $openTickets = $repo->findByStatus('open');
+        $closedTickets = $repo->findByStatus('closed');
+        $reopenedTickets = $repo->findByStatus('reopened');
+        $allTickets = count($repo->findAll());
+        $amountOpen = count($openTickets);
+        $amountClosed = count($closedTickets);
+        $amountReopened = count($reopenedTickets);
 
-            return $this->render('dashboard/index.html.twig');
-        }
+        $percentage = ($amountReopened / $allTickets) * 100;
+
+        return $this->render('dashboard/index.html.twig', [
+            'open' => $amountOpen,
+            'closed' => $amountClosed,
+            'reopend' => $amountReopened,
+            'percentage' => $percentage,
+        ]);
+    }
 
 }
