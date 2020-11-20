@@ -228,13 +228,24 @@ class TicketsController extends AbstractController
 
         return $this->redirectToRoute('tickets_index');
     }
+
     /**
-     * @Route("/status/Change", name="status_edit", methods={"GET","POST"})
+     * @Route("/all/reset", name="tickets_reset", methods={"GET"})
      */
-    public function changeStatus($id, UsersRepository $repo){
+    public function resetTicket(TicketsRepository $repo): Response
+    {
+        $tickets = $repo->findBy(['status' => ['in progress', 'escalated', 'require more information']]);
         $entityManager = $this->getDoctrine()->getManager();
-        $ticket = $entityManager->getRepository(Tickets::class)->find($id);
-        $email = $this->getUser()->getUsername();
-        $user = $repo->findOneByEmail($email);
+        foreach ($tickets as $ticket){
+
+            $ticket = $entityManager->getRepository(Tickets::class)->find($ticket->getId());
+            $ticket->setStatus('open');
+            $ticket->setAssignedTo(null);
+
+
+        }
+        $entityManager->flush();
+
+        return $this->redirectToRoute('dashboard');
     }
 }
