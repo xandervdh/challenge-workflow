@@ -28,6 +28,10 @@
                 <td>
                     <a href="{{ path('tickets_show', {'id': ticket.id}) }}">show</a>
                 </td>
+                {% if is_granted('ROLE_MANAGER')%}
+                <td> <a href=" ">Priority</a>
+                </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>
