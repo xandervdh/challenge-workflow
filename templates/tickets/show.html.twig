@@ -41,6 +41,16 @@
         {% if ticket.status == 'open' %}
             <a href="{{ path('tickets_update', {'id': ticket.id}) }}">Claim ticket</a><br>
         {% endif %}
+        {% if is_granted('ROLE_MANAGER')%}
+
+            {% if ticket.priority == false %}
+                <a href="{{ path('tickets_priority', {'id': ticket.id}) }}"> Set priority</a><br>
+            {% else %}
+                <a href="{{ path('tickets_no_priority', {'id': ticket.id}) }}"> Remove priority</a><br>
+            {% endif %}
+
+
+        {% endif %}
         {% endif %}
         {% if ticket.status == 'in progress' %}
             <table class="overview">
