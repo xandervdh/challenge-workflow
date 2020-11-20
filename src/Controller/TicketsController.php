@@ -262,4 +262,18 @@ class TicketsController extends AbstractController
 
         return $this->redirectToRoute('tickets_index');
     }
+
+    /**
+     * @Route("/nopriority/{id}", name="tickets_no_priority", methods={"GET"})
+     */
+    public function removePriority($id, UsersRepository $repo): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $ticket = $entityManager->getRepository(Tickets::class)->find($id);
+        $ticket->setPriority(0);
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tickets_index');
+    }
 }

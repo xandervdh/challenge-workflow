@@ -13,8 +13,8 @@
             <th>Message</th>
             <th>DateTime</th>
             <th>Status</th>
-            <th>actions</th>
             <th>priority</th>
+            <th>actions</th>
         </tr>
         </thead>
         <tbody>
@@ -27,12 +27,26 @@
                 <td>{{ ticket.dateTime ? ticket.dateTime|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ ticket.status }}</td>
                 <td>
-                    <a href="{{ path('tickets_show', {'id': ticket.id}) }}">show</a>
-                </td>
-                {% if is_granted('ROLE_MANAGER')%}
-                <td> <a href="{{ path('tickets_priority', {'id': ticket.id}) }}">Priority</a><br>
-                </td>
+                {% if is_granted('ROLE_AGENT') or is_granted('ROLE_SECOND_LINE_AGENT') or is_granted('ROLE_MANAGER') %}
+                    {{ ticket.priority  ? 'Yes' : 'No' }}
                 {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('tickets_show', {'id': ticket.id}) }}">show</a><br>
+                    {% if is_granted('ROLE_MANAGER')%}
+
+                        {% if ticket.priority == false %}
+                            <a href="{{ path('tickets_priority', {'id': ticket.id}) }}"> Set priority</a><br>
+                        {% else %}
+                            <a href="{{ path('tickets_no_priority', {'id': ticket.id}) }}"> Remove priority</a><br>
+                        {% endif %}
+
+
+                    {% endif %}
+                    {% if ticket.status == 'open' %}
+                        <a href="{{ path('tickets_update', {'id': ticket.id}) }}">Claim ticket</a><br>
+                    {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>
