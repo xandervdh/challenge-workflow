@@ -41,8 +41,6 @@ class UsersController extends AbstractController
     {
         $this->session = $session;
         $this->usersRepository = $repository;
-        $user = $this->getUser();
-        $this->name = $user->getFirstName();
         $this->verified = $verified;
     }
 
