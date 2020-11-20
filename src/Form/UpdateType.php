@@ -19,11 +19,13 @@ class UpdateType extends AbstractType
                     'style' => 'margin:5px 0;'),
                 'choices' =>
                     array(
-                        'require more information' => 'require more information',
+                        'waiting for customer feedback' => 'require more information',
                         'closed' => 'closed',
+                        'escalate' => 'escalate',
+                        'in progress' => 'in progress'
                     )
             ,
-                'multiple' => true,
+
                 'required' => true,
             ))
         ;
