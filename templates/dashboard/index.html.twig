@@ -2,7 +2,9 @@
 
 {% block title %}Home{% endblock %}
 {% block body %}
+    {% if is_granted("ROLE_MANAGER") %}
     <div class="tableWrapper">
         <a href="{{ path('tickets_reset') }}">reset tickets</a>
     </div>
+    {% endif %}
 {% endblock %}
