@@ -131,9 +131,9 @@ class TicketsController extends AbstractController
      */
     public function show(Tickets $ticket, CommentsRepository $commentsRepository, $id, Request $request): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
         $form = $this->createForm(StatusType::class, $ticket);
         $form->handleRequest($request);
 
@@ -155,9 +155,9 @@ class TicketsController extends AbstractController
      */
     public function edit(Request $request, Tickets $ticket): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
         $form = $this->createForm(TicketsType::class, $ticket);
         $form->handleRequest($request);
 
@@ -178,9 +178,9 @@ class TicketsController extends AbstractController
      */
     public function delete(Request $request, Tickets $ticket): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
         if ($this->isCsrfTokenValid('delete'.$ticket->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($ticket);
@@ -195,9 +195,9 @@ class TicketsController extends AbstractController
      */
     public function agentTickets(UsersRepository $repo, TicketsRepository $tRepo): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
 
         $email = $this->getUser()->getUsername();
         $user = $repo->findOneByEmail($email);
@@ -214,9 +214,9 @@ class TicketsController extends AbstractController
      */
     public function claim($id, UsersRepository $repo): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
         $entityManager = $this->getDoctrine()->getManager();
         $ticket = $entityManager->getRepository(Tickets::class)->find($id);
         $email = $this->getUser()->getUsername();

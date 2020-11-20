@@ -43,9 +43,9 @@ class CommentsController extends AbstractController
      */
     public function index(CommentsRepository $commentsRepository): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
 
         return $this->render('comments/index.html.twig', [
             'comments' => $commentsRepository->findAll(),
@@ -85,9 +85,9 @@ class CommentsController extends AbstractController
      */
     public function show(Comments $comment): Response
     {
-        if( !$this->verified->checkVerified()){
+        /*if( !$this->verified->checkVerified()){
             return $this->redirectToRoute('verify');
-        }
+        }*/
         return $this->render('comments/show.html.twig', [
             'comment' => $comment,
         ]);

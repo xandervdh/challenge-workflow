@@ -37,7 +37,6 @@ class DashboardController extends AbstractController
                 return $this->redirectToRoute('verify');
             }*/
 
-
             return $this->render('dashboard/index.html.twig');
         }
 //    /**
