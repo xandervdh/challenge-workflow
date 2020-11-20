@@ -33,12 +33,11 @@
                 <th>Priority</th>
                 <td>{{ ticket.priority ? 'Yes' : 'No' }}</td>
             </tr>
-            <tr>
 
-            </tr>
 
             </tbody>
         </table>
+
         {% if ticket.status == 'open' %}
             <a href="{{ path('tickets_update', {'id': ticket.id}) }}">Claim ticket</a><br>
         {% endif %}

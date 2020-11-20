@@ -250,6 +250,28 @@ class TicketsController extends AbstractController
     }
 
     /**
+     * @Route("/updateStatus/{id}", name="tickets_status_update", methods={"GET"})
+     */
+   /*public function changeStatus($id, UsersRepository $repo,Request $request): Response
+    {
+        if( !$this->verified->checkVerified()) {
+            return $this->redirectToRoute('verify');
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $ticket = $entityManager->getRepository(Tickets::class)->find($id);
+        $statusForm=$this->createForm(UpdateType::class);
+        $statusForm->handleRequest($request);
+
+        if ($statusForm->isSubmitted() && $statusForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+
+        }
+
+        return $this->redirectToRoute('tickets_index');
+    }
+    */
+
      * @Route("/priority/{id}", name="tickets_priority", methods={"GET"})
      */
     public function setPriority($id, UsersRepository $repo): Response
@@ -276,4 +298,5 @@ class TicketsController extends AbstractController
 
         return $this->redirectToRoute('tickets_index');
     }
+
 }
